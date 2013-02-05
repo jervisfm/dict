@@ -115,14 +115,35 @@ System.out.println("Not yet implemented2");
 		};
 	}
 	
-	
-	
-	
-	
-	public static String lookup(String word) {
+	/**
+	 * Returns the text content contained in the word defintion
+	 * retrieved from google
+	 * @param word word to lookup
+	 * @return
+	 * @throws IOException if an error occurs (e.g. network failure)
+	 */
+	public static String lookup(String word) throws IOException {
 		
-		return null;
+		String url = getURL(word);
+		String data = Net.getPage(url); 
+		
+		/*
+		 * Data we want is in a "dict" class in a "ol" tag
+		 */
+		Document doc = Jsoup.parse(data);
+		Elements elms = doc.getElementsByClass("dict");
+		ArrayList<Element> defs = new ArrayList<Element>();
+		StringBuffer sb = new StringBuffer();
+
+		for (int i = 0; i < elms.size(); ++i) {
+			Element e = elms.get(i);
+			if (e.tagName().equalsIgnoreCase("ol")) {
+				defs.add(e);
+				sb.append(e.text());
+				sb.append("\n");
+			}
+		}
+		return sb.toString();
 	}
-	
 	
 }
