@@ -14,13 +14,7 @@ import com.google.api.client.http.javanet.NetHttpTransport;
 
 public class DictTest {
 
-	@Test
-	public void test() {
-		
-		
-		
-		
-	}
+	
 	
 	@Test
 	public void getURL() {
