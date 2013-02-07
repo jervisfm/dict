@@ -15,7 +15,6 @@ import com.google.api.client.http.HttpResponse;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.util.Charsets;
 
-
 public class Dict {
 
 	public static final String USER_AGENT = "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:19.0) Gecko/20100101 Firefox/19.0"; 
@@ -61,10 +60,8 @@ public class Dict {
 	}
 	
 	
-	
-	public static void t () throws Exception {
-System.out.println("Not yet implemented2");
-		
+	// test method
+	private static void t () throws Exception {
 		String url_string = "http://www.google.com/search?q=define:you";
 		NetHttpTransport nht = new NetHttpTransport();
 		
@@ -145,5 +142,4 @@ System.out.println("Not yet implemented2");
 		}
 		return sb.toString();
 	}
-	
 }
