@@ -1,5 +1,10 @@
+import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.StringReader;
 import java.util.ArrayList;
 
 import org.jsoup.Jsoup;
@@ -22,7 +27,7 @@ public class Dict {
 	
 	public static void main(String[] args) throws Exception {
 		t();
-		
+		System.out.println("no");
 	}
 	
 	public static String getURL(String word) {
@@ -62,7 +67,7 @@ public class Dict {
 	
 	// test method
 	private static void t () throws Exception {
-		String url_string = "http://www.google.com/search?q=define:you";
+		String url_string = "http://www.google.com/search?q=define:emotional";
 		NetHttpTransport nht = new NetHttpTransport();
 		
 		HttpRequestFactory hrf =  nht.createRequestFactory();
@@ -86,7 +91,14 @@ public class Dict {
 			System.out.println("We have success:");
 			com.google.common.io.Files.write(result, new File("test.html"), Charsets.UTF_8);
 			
-			Document doc = Jsoup.parse(result);
+			InputStream is = new ByteArrayInputStream(result.getBytes());
+			
+			Document doc = Jsoup.parse(new File("test.html"), Charsets.ISO_8859_1.toString());
+			doc = Jsoup.parse(result);
+			
+			//			doc = Jsoup.parse(is, "UTF-8", "Google.com");
+			
+			doc.outputSettings().charset(Charsets.ISO_8859_1);			
 			Elements elms = doc.getElementsByClass("dict");
 			ArrayList<Element> defs = new ArrayList<Element>();
 			for (int i = 0; i < elms.size(); ++i) {
@@ -102,6 +114,7 @@ public class Dict {
 				System.out.println(++counter);
 				System.out.println(e.html());
 				System.out.println("");
+				com.google.common.io.Files.write(e.html(), new File("test2.html"), Charsets.UTF_8);
 			}
 			
 			// System.out.println(result);
