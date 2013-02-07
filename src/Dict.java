@@ -50,6 +50,7 @@ public class Dict {
 		 */
 		Document doc = Jsoup.parse(data);
 		Elements elms = doc.getElementsByClass("dict");
+		doc.outputSettings().charset(Charsets.ISO_8859_1);	
 		ArrayList<Element> defs = new ArrayList<Element>();
 		StringBuffer sb = new StringBuffer();
 

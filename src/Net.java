@@ -29,9 +29,6 @@ public class Net {
 		HttpResponse hr = req.execute();
 		if (hr.isSuccessStatusCode()) {
 			String result = hr.parseAsString();
-			System.out.println("We have success:");
-			com.google.common.io.Files.write(result, new File("test.html"), Charsets.UTF_8);
-			System.out.println(result);
 			return result;
 		} else {
 			return null;
