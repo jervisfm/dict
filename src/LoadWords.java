@@ -1,7 +1,9 @@
 import java.io.File;
+import com.google.gson.Gson;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Scanner;
 
 
@@ -9,38 +11,56 @@ public class LoadWords {
 
 	public static final String LINE_SEP = "\n= = = = =\n";
 	public static final String WORD_SEP = "^^^^";
+	public static final int JOB_SIZE = 2271;
+	public static final int SLEEP_TIME = 2 * 1000;
 	/**
 	 * @param args
 	 */
 	public static void main(String[] args) throws Exception {
-		// TODO Auto-generated method stub
+		/* if (args.length != 1 || Integer.parseInt(args[0]) < 1) {
+			System.out.println("Please enter only 1 postive number argumnet" +
+								"to append to the word_goog_json file");
+			System.exit(-1);
+		} */
+		//final int JOB_NO = Integer.parseInt(args[0]); 
+		final int JOB_NO = 1;
 		ArrayList<String> words = getList();
 		System.out.println("Google Dictionary Loader" + words.size());
-		int i = 0; 
-		File f = new File("words_goog.txt");
+		File f = new File(String.format("words_goog_json_%d.txt", JOB_NO));
 		PrintWriter pw = new PrintWriter(f);
-		for (String s : words) {
-			Thread.sleep(30 * 1000);
-			System.out.print("Iteration " + i + " ... ");
+		HashMap<String, DictResult> hm = new HashMap<String, DictResult>(46000);
+		
+		for (int i = (JOB_NO - 1) * JOB_SIZE, c = 0; i < JOB_SIZE; ++i, ++c) {
+			
+			Thread.sleep(SLEEP_TIME);
+			String s = words.get(i);
+			System.out.print(
+					String.format("Iteration %d of %d ...", c, JOB_SIZE));
 			System.out.println("Saving word: " + s);
 			String data = null;
-			try { 
+			try {
 				data = Dict.getHtml(s);
 			} catch (Exception e) {
-				System.out.println("Errorr -- skipping " + s);
+				System.out.println("Error -- skipping " + s);
 				continue;
 			}
-					
 			
-			String fmtData = String.format("\n%d)%s %s %s\n", i,s, WORD_SEP, data);
-			// appennd to file 
+			// Make Dict Result
+			DictResult dr = new DictResult(i, s, data);
+			hm.put(s, dr);
 			
-			pw.append(fmtData);		
-			pw.append(LINE_SEP);
-			pw.flush();
+			// Get JSON
+			Gson gson = new Gson();
+			String json = gson.toJson(hm);
 			
-			++i;
+			// Write it out to disk
+			pw.print(json);
+			pw.flush(); 
+			
+			if (c == 3) 
+				break;
 		}
+		
 		pw.close();
 		System.out.println("data loading complete");
 	}
