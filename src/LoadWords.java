@@ -46,8 +46,6 @@ public class LoadWords {
 	}
 	
 	
-	
-	
 	private static ArrayList<String> getList() throws FileNotFoundException {
 		File f = new File("words.txt");
 		Scanner in = new Scanner(f); 
