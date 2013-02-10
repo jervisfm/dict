@@ -17,13 +17,13 @@ public class LoadWords {
 	 * @param args
 	 */
 	public static void main(String[] args) throws Exception {
-		/* if (args.length != 1 || Integer.parseInt(args[0]) < 1) {
+		if (args.length != 1 || Integer.parseInt(args[0]) < 1) {
 			System.out.println("Please enter only 1 postive number argumnet" +
 								"to append to the word_goog_json file");
 			System.exit(-1);
-		} */
-		//final int JOB_NO = Integer.parseInt(args[0]); 
-		final int JOB_NO = 1;
+		} 
+		final int JOB_NO = Integer.parseInt(args[0]); 
+		// final int JOB_NO = 1;
 		ArrayList<String> words = getList();
 		System.out.println("Google Dictionary Loader" + words.size());
 		File f = new File(String.format("words_goog_json_%d.txt", JOB_NO));
@@ -56,9 +56,6 @@ public class LoadWords {
 			// Write it out to disk
 			pw.print(json);
 			pw.flush(); 
-			
-			if (c == 3) 
-				break;
 		}
 		
 		pw.close();
