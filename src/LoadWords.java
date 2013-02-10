@@ -15,31 +15,38 @@ public class LoadWords {
 	public static void main(String[] args) throws Exception {
 		// TODO Auto-generated method stub
 		ArrayList<String> words = getList();
-		System.out.println("hi j " + words.size());
+		System.out.println("Google Dictionary Loader" + words.size());
 		int i = 0; 
 		File f = new File("words_goog.txt");
 		PrintWriter pw = new PrintWriter(f);
 		for (String s : words) {
-			Thread.sleep(15 * 1000);
+			Thread.sleep(30 * 1000);
 			System.out.print("Iteration " + i + " ... ");
 			System.out.println("Saving word: " + s);
-			String data = Dict.getHtml(s);
+			String data = null;
+			try { 
+				data = Dict.getHtml(s);
+			} catch (Exception e) {
+				System.out.println("Errorr -- skipping " + s);
+				continue;
+			}
 					
 			
-			String fmtData = String.format("\n%s %s %s\n", s, WORD_SEP, data);
+			String fmtData = String.format("\n%d)%s %s %s\n", i,s, WORD_SEP, data);
 			// appennd to file 
 			
 			pw.append(fmtData);		
 			pw.append(LINE_SEP);
 			pw.flush();
 			
-			if (i == 2)
-				break;
 			++i;
 		}
 		pw.close();
 		System.out.println("data loading complete");
 	}
+	
+	
+	
 	
 	private static ArrayList<String> getList() throws FileNotFoundException {
 		File f = new File("words.txt");
