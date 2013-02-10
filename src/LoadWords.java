@@ -30,7 +30,8 @@ public class LoadWords {
 		PrintWriter pw = new PrintWriter(f);
 		HashMap<String, DictResult> hm = new HashMap<String, DictResult>(46000);
 		
-		for (int i = (JOB_NO - 1) * JOB_SIZE, c = 0; i < JOB_SIZE; ++i, ++c) {
+		final int startIndex = (JOB_NO - 1) * JOB_SIZE;
+		for (int i = startIndex, c = 0; i < startIndex + JOB_SIZE; ++i, ++c) {
 			
 			Thread.sleep(SLEEP_TIME);
 			String s = words.get(i);
