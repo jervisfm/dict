@@ -1,11 +1,15 @@
+import java.io.File;
+import java.lang.reflect.Type;
 import java.util.HashMap;
 
+import com.google.api.client.util.Charsets;
+import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 
 
 public class JsonTest {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
 		System.out.println("Hello me");
 		
 		Gson gson = new Gson(); 
@@ -28,16 +32,23 @@ public class JsonTest {
 //		DictResult[] drarr = new DictResult[2]; 
 //		drarr = drlist.toArray(d);
 		
-		 
-		String result = gson.toJson(drlist);
-		System.out.println(result);
-		
-		if (true) return;
-		DictResult[]ans = gson.fromJson(result, DictResult[].class);
-		for (DictResult i  : ans) {
-			System.out.print(i);
-			System.out.print("\n---\n");
+		if (false){ 
+			String result = gson.toJson(drlist);
+			System.out.println(result);
+			
 		}
+		String fs = "words_goog_compiled.txt"; 
+		// fs = "words_goog_json_1.txt";
+		File file = new File (fs);
+		System.out.println("Reading file to memory ...");
+		String result = com.google.common.io.Files.toString(file, Charsets.UTF_8);
+		System.out.println("Done");
+		
+		Type collectionType = new TypeToken<HashMap<String,DictResult>>(){}.getType();
+		HashMap<String, DictResult> ans = gson.fromJson(result, collectionType);
+		// DictResult[]ans = gson.fromJson(result, DictResult[].class);
+		
+		System.out.println("loaded this many entries: " + ans.size());
 		
 		
 		
